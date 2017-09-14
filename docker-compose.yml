@@ -34,12 +34,12 @@ services:
     image: redis
     network_mode: "host"
     ports:
-      - "27017:27017"
+      - "6379:6379"
 
   mongodb:
     image: mongo
     network_mode: "host"
     ports:
-      - "6379:6379"
+      - "27017:27017"
     # environment:
       # MONGODB_PASSWD: NO PASSWD REQUIRED
