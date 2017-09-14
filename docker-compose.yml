@@ -1,0 +1,45 @@
+version: "3"
+services:
+  web:
+    build: ./web
+    network_mode: "host"
+    ports:
+      - "9002:9002"
+      - "9003:9003"
+    command: /opt/raincatcher/bin/start.sh
+    depends_on:
+      - core
+    environment:
+      - NODE_ENV=development
+    # volumes:
+      # - ./src/raincatcher-angularjs:/opt/raincatcher/src
+    # command: bash -c "cd /opt/raincatcher/src/raincatcher-angularjs && npm run start"
+
+  core:
+    build: ./core
+    network_mode: "host"
+    ports:
+      - "8001:8001"
+    command: /opt/raincatcher/bin/start.sh
+    depends_on:
+      - redis
+      - mongodb  
+    environment:
+      - NODE_ENV=development
+    # volumes:
+      # - ./src/raincatcher-core:/opt/raincatcher/src
+    # command: bash -c "cd /opt/raincatcher/src/raincatcher-core && npm run start"
+
+  redis:
+    image: redis
+    network_mode: "host"
+    ports:
+      - "27017:27017"
+
+  mongodb:
+    image: mongo
+    network_mode: "host"
+    ports:
+      - "6379:6379"
+    # environment:
+      # MONGODB_PASSWD: NO PASSWD REQUIRED
