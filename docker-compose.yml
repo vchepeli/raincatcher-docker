@@ -1,45 +1,56 @@
-version: "3"
+version: "3.3"
 services:
+  nodejs:
+    build: ./nodejs
+    image: centos-nodejs
+    environment:
+      CENTOS_VERSION: 7
+      NODE_VERSION: 6
+      NVM_VERSION: 0.33.4
+
+  core:
+    build: ./core
+    image: raincatcher-core:${RAINCATCHER_VERSION:-latest}
+    network_mode: "host"
+    ports:
+      - "8001:8001"
+    depends_on:
+      - nodejs
+      - redis
+      - mongodb  
+    environment:
+      NODE_ENV: development
+      DEBUG: 1
+    # volumes:
+      # - ./src/raincatcher-core:/opt/raincatcher/raincatcher-core
+
   web:
     build: ./web
+    image: raincatcher-web:${RAINCATCHER_VERSION:-latest}
     network_mode: "host"
     ports:
       - "9002:9002"
       - "9003:9003"
-    command: /opt/raincatcher/bin/start.sh
     depends_on:
+      - nodejs
       - core
     environment:
-      - NODE_ENV=development
+      NODE_ENV: development
+      DEBUG: 1
     # volumes:
-      # - ./src/raincatcher-angularjs:/opt/raincatcher/src
-    # command: bash -c "cd /opt/raincatcher/src/raincatcher-angularjs && npm run start"
-
-  core:
-    build: ./core
-    network_mode: "host"
-    ports:
-      - "8001:8001"
-    command: /opt/raincatcher/bin/start.sh
-    depends_on:
-      - redis
-      - mongodb  
-    environment:
-      - NODE_ENV=development
-    # volumes:
-      # - ./src/raincatcher-core:/opt/raincatcher/src
-    # command: bash -c "cd /opt/raincatcher/src/raincatcher-core && npm run start"
+      # - ./src/raincatcher-angularjs:/opt/raincatcher/raincatcher-angularjs
 
   redis:
-    image: redis
+    image: redis:${REDIS_VERSION:-latest}
     network_mode: "host"
     ports:
       - "6379:6379"
 
   mongodb:
-    image: mongo
+    image: mongo:${MONGO_VERSION:-latest}
     network_mode: "host"
     ports:
       - "27017:27017"
     # environment:
+      # MONGODB_USERNM: NO USERNM REQUIRED
       # MONGODB_PASSWD: NO PASSWD REQUIRED

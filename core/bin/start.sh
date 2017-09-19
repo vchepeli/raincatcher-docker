@@ -4,8 +4,7 @@
 node --version
 
 # Start Core module
-cd /opt/raincatcher/raincatcher-core
-
+cd $RAINCATCHER_INST_DIR/raincatcher-core
 exec npm run start $@
 status=$?
 if [ $status -ne 0 ]; then

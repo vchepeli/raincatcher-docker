@@ -4,7 +4,7 @@
 node --version
 
 # Start Mobile/Portal apps
-cd /opt/raincatcher/raincatcher-angularjs
+cd $RAINCATCHER_INST_DIR/raincatcher-angularjs
 
 exec npm run start $@
 status=$?
