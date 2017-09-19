@@ -3,7 +3,6 @@
 . $NVM_DIR/nvm.sh  
 nvm use default
 node --version
-# npm install -g typescript@^2.5.0
 
 # Clone Raincatcher AngularJS repository
 cd $RAINCATCHER_INSTALL_DIR
